@@ -1,0 +1,24 @@
+-- V1__base_oracle.sql
+-- Baseline inicial do banco OrangeRoute
+-- =========================================
+--
+-- Este script representa o estado atual do banco de dados.
+-- Todas as tabelas, constraints e dados já foram criados previamente
+-- via SQL Developer.
+--
+-- A partir desta versão (V1), qualquer alteração futura
+-- será versionada utilizando o padrão Flyway.
+--
+-- Estruturas existentes (exemplo):
+-- - T_OR_USUARIO
+-- - T_OR_TIPO_USUARIO
+-- - T_OR_TRILHA_CARREIRA
+-- - T_OR_TAG
+-- - T_OR_COMENTARIO
+-- - T_OR_FAVORITO
+-- - T_OR_LINK
+-- - T_OR_TAG_CARREIRA
+--
+-- IMPORTANTE:
+-- Este script não executa comandos DDL (CREATE/ALTER),
+-- pois o banco já está previamente estruturado.

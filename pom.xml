@@ -105,6 +105,13 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- FLYWAY 
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>9.22.3</version>
+		</dependency>-->
+
 		<!-- Testes -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

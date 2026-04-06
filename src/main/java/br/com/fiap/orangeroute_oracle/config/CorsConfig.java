@@ -14,18 +14,14 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        // 🔥 ACEITA QUALQUER ORIGEM (CORRETO COM CREDENCIAIS)
         config.setAllowedOriginPatterns(List.of("*"));
 
-        // 🔓 Métodos
         config.setAllowedMethods(
                 List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
         );
 
-        // 🔓 Headers
         config.setAllowedHeaders(List.of("*"));
 
-        // 🔓 Token (Authorization)
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =

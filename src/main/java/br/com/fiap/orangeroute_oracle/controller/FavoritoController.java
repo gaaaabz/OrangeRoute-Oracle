@@ -25,7 +25,6 @@ public class FavoritoController {
     public ResponseEntity<?> listarTodos() {
         List<FavoritoResponseDTO> favoritos = service.listarTodos();
 
-        // Adiciona _links para cada item
         List<Map<String, Object>> data = favoritos.stream().map(f -> {
             Map<String, Object> item = new LinkedHashMap<>();
             item.put("idFavorito", f.getIdFavorito());

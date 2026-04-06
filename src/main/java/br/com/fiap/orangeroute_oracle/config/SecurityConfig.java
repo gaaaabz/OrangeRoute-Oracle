@@ -21,26 +21,21 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            // 🔓 Habilita CORS (usa CorsConfig)
+            // Habilita CORS 
             .cors(cors -> {})
 
-            // 🔒 Desabilita CSRF (API REST)
             .csrf(csrf -> csrf.disable())
 
-            // 🔒 Sem sessão (JWT)
             .sessionManagement(sess ->
                 sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
-            // 🔐 Regras de autorização
+            //  Regras de jwt
             .authorizeHttpRequests(auth -> auth
 
-                // 🔥 ESSENCIAL (preflight CORS)
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                // =====================
-                // 🔓 ROTAS PÚBLICAS
-                // =====================
+                // ROTAS PÚBLICAS
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/usuario/**").permitAll()
 
@@ -51,40 +46,29 @@ public class SecurityConfig {
                         "/swagger-ui.html"
                 ).permitAll()
 
-                // =====================
-                // 🔐 ROTAS PROTEGIDAS
-                // =====================
+                // ROTAS PROTEGIDAS
 
-                // TRILHAS
                 .requestMatchers("/trilhas/**")
                     .hasAnyRole("USER", "ADMIN")
 
-                // COMENTÁRIOS
                 .requestMatchers(HttpMethod.GET, "/comentarios/**")
                     .hasAnyRole("USER", "ADMIN")
 
-                // 🔥 AJUSTE AQUI (ANTES ERA hasRole("USER"))
                 .requestMatchers(HttpMethod.POST, "/comentarios/**")
                     .hasAnyRole("USER", "ADMIN")
 
-                // FAVORITOS
-                // 🔥 AJUSTE AQUI TAMBÉM
                 .requestMatchers("/favoritos/**")
                     .hasAnyRole("USER", "ADMIN")
 
-                // LINKS
                 .requestMatchers(HttpMethod.GET, "/links/**")
                     .hasAnyRole("USER", "ADMIN")
 
-                // ADMIN
                 .requestMatchers(HttpMethod.DELETE, "/usuario/**")
                     .hasRole("ADMIN")
 
-                // QUALQUER OUTRA
                 .anyRequest().authenticated()
             )
 
-            // 🔐 Filtro JWT
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

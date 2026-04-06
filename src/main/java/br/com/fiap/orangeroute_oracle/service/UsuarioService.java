@@ -9,6 +9,7 @@ import br.com.fiap.orangeroute_oracle.entity.Usuario;
 import br.com.fiap.orangeroute_oracle.repository.TipoUsuarioRepository;
 import br.com.fiap.orangeroute_oracle.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final TipoUsuarioRepository tipoUsuarioRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UsuarioResponseDTO cadastrarUsuario(UsuarioCreateDTO dto) {
 
@@ -39,7 +42,9 @@ public class UsuarioService {
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNomeUsuario(dto.getNomeUsuario());
         novoUsuario.setEmail(dto.getEmail());
-        novoUsuario.setSenha(dto.getSenha());
+
+        novoUsuario.setSenha(passwordEncoder.encode(dto.getSenha()));
+
         novoUsuario.setTipoUsuario(tipoUsuario);
         novoUsuario.setAtivo("1");
 
@@ -65,7 +70,6 @@ public class UsuarioService {
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + id));
 
-       
         if (dto.getNomeUsuario() != null && !dto.getNomeUsuario().isBlank())
             existente.setNomeUsuario(dto.getNomeUsuario());
 
@@ -75,7 +79,9 @@ public class UsuarioService {
         if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
             if (dto.getSenha().length() < 8)
                 throw new RuntimeException("A senha deve ter pelo menos 8 caracteres.");
-            existente.setSenha(dto.getSenha());
+
+            // 🔐 SENHA CRIPTOGRAFADA NO UPDATE
+            existente.setSenha(passwordEncoder.encode(dto.getSenha()));
         }
 
         if (dto.getIdTipoUsuario() != null) {
@@ -121,7 +127,6 @@ public class UsuarioService {
                 usuario.getNomeUsuario(),
                 usuario.getEmail(),
                 usuario.getTipoUsuario().getIdTipoUsuario(),
-               
                 usuario.getTipoUsuario().getNomeTipoUsuario(),
                 usuario.getAtivo(),
                 fotoBase64
